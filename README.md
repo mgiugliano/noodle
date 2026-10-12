@@ -5,7 +5,7 @@ Find a time that works for everyone, without handing your calendar to a third pa
 
 <p align="center">
   <img src="docs/images/voting-form.jpg" alt="Noodle voting page: a colourful header and one yes / if need be / no control per time slot" width="48%">
-  <img src="docs/images/results.jpg" alt="Noodle results grid with the best slot highlighted" width="48%">
+  <img src="docs/images/results.jpg" alt="Noodle summary: one compact row per time slot with yes / if need be counts, the names behind them and the best slots highlighted" width="48%">
 </p>
 
 Noodle has two parts that talk to each other over HTTPS:

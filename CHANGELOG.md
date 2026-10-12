@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Voting page: the summary is now one compact row per option (date and time, yes / if need be counts, names as small chips, best options starred), so many slots fit without scrolling sideways. The full grid by participant is available under "Show answers by participant". On phones each row becomes a small card
 - Voting page: a button in the header switches between light and dark theme (follows the system by default, remembers the choice in the visitor's browser, no inline script or style, works without JavaScript)
 - `noodle new --no-reserved` and `--unreserve "<rule>"`: offer reserved time (for example the lunch break) for a single poll without editing the configuration
 - `noodle busy <day> [<last day>]` shows what blocks time on given days and why

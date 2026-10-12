@@ -179,6 +179,46 @@ function render_poll(array $poll, array $ctx): void
     if (count($votes) === 0) {
         $out .= '<p class="muted empty">No responses yet. Be the first to vote.</p>';
     } else {
+        // Compact summary: one row per option, with the counts and the names behind them.
+        $out .= '<table class="sum-tbl"><thead><tr><th scope="col">Option</th>'
+            . '<th scope="col" class="n"><span class="sr">Yes</span><span aria-hidden="true" title="Yes">' . v_icon('y') . '</span></th>'
+            . ($allowMaybe ? '<th scope="col" class="n"><span class="sr">If need be</span><span aria-hidden="true" title="If need be">' . v_icon('m') . '</span></th>' : '')
+            . ($hide ? '' : '<th scope="col">Who</th>') . '</tr></thead><tbody>';
+        foreach ($poll['options'] as $o) {
+            $oid = $o['id'];
+            $t = $tally[$oid];
+            $isBest = isset($best[$oid]);
+            $out .= '<tr' . ($isBest ? ' class="is-best"' : '') . '><th scope="row" class="opt-cell">';
+            if ($isBest) {
+                $out .= '<span class="star" title="Best option">' . v_icon('star') . '<span class="sr">Best option: </span></span>';
+            }
+            $out .= '<span class="day" data-start="' . h($o['start']) . '" data-role="day">' . h(v_day($o['start'], $tz)) . '</span> ';
+            $out .= '<span class="time" data-start="' . h($o['start']) . '" data-end="' . h($o['end']) . '" data-role="range">' . h(v_range($o, $tz)) . '</span></th>';
+            $out .= '<td class="n yes' . ($t['yes'] === 0 ? ' zero' : '') . '">' . $t['yes'] . '</td>';
+            if ($allowMaybe) {
+                $out .= '<td class="n maybe' . ($t['maybe'] === 0 ? ' zero' : '') . '">' . $t['maybe'] . '</td>';
+            }
+            if (!$hide) {
+                $out .= '<td class="who-list">';
+                foreach (['y' => 'nm-y', 'm' => 'nm-m'] as $ch => $cls) {
+                    if ($ch === 'm' && !$allowMaybe) {
+                        continue;
+                    }
+                    foreach ($votes as $v) {
+                        if (($v['choices'][$oid] ?? 'n') !== $ch) {
+                            continue;
+                        }
+                        $mine = $own !== null && $own['id'] === $v['id'];
+                        $out .= '<span class="nm ' . $cls . ($mine ? ' me' : '') . '"><span class="sr">' . ($ch === 'y' ? 'Yes: ' : 'If need be: ') . '</span>' . h($v['name']) . '</span> ';
+                    }
+                }
+                $out .= '</td>';
+            }
+            $out .= '</tr>';
+        }
+        $out .= '</tbody></table>';
+        if (!$hide) {
+            $out .= '<details class="by-person"><summary>Show answers by participant</summary>';
         $out .= '<div class="table-wrap" tabindex="0" role="region" aria-label="Responses table, scrollable"><table class="grid"><thead><tr><th class="who" scope="col"><span class="sr">Participant</span></th>';
         foreach ($poll['options'] as $o) {
             $isBest = isset($best[$o['id']]);
@@ -212,6 +252,8 @@ function render_poll(array $poll, array $ctx): void
             $out .= '</td>';
         }
         $out .= '</tr></tfoot></table></div>';
+            $out .= '</details>';
+        }
         if ($hide) {
             $out .= '<p class="muted">Individual responses are hidden by the organiser.</p>';
         }

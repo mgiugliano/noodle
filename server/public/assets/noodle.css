@@ -159,6 +159,29 @@ table.grid { border-collapse: separate; border-spacing: 0 6px; width: 100%; min-
 .sum .n-yes { color: var(--yes); font-size: 1.15rem; }
 .sum .n-maybe { color: var(--maybe); font-size: .9rem; margin-left: 4px; }
 .sum.is-best { background: color-mix(in srgb, var(--best) 18%, transparent); border-radius: 0 0 10px 10px; }
+/* Compact summary: one row per option */
+.sum-tbl { width: 100%; border-collapse: collapse; font-size: .88rem; margin-top: 8px; }
+.sum-tbl th, .sum-tbl td { padding: 6px 8px; text-align: left; vertical-align: middle; border-top: 1px solid var(--line); }
+.sum-tbl thead th { border-top: 0; padding-top: 2px; padding-bottom: 4px; color: var(--muted); font-size: .72rem; text-transform: uppercase; letter-spacing: .06em; font-weight: 700; }
+.sum-tbl .opt-cell { font-weight: 600; white-space: nowrap; }
+.sum-tbl .opt-cell .time { color: var(--muted); font-weight: 500; font-variant-numeric: tabular-nums; margin-left: 6px; }
+.sum-tbl .n { width: 2.6rem; text-align: center; font-variant-numeric: tabular-nums; font-weight: 700; }
+.sum-tbl thead .n .ico { width: 1em; height: 1em; vertical-align: -.15em; }
+.sum-tbl td.yes { color: var(--yes); }
+.sum-tbl td.maybe { color: var(--maybe); }
+.sum-tbl td.zero { color: var(--none); font-weight: 500; opacity: .6; }
+.sum-tbl tr.is-best { background: color-mix(in srgb, var(--best) 15%, transparent); }
+.sum-tbl .star { color: var(--best); margin-right: 4px; }
+.sum-tbl .star .ico { vertical-align: -.2em; }
+.who-list { line-height: 1.7; }
+.nm { display: inline-block; padding: 0 8px; margin: 0 2px 0 0; border-radius: 999px; font-size: .78rem; font-weight: 600; line-height: 1.6; overflow-wrap: anywhere; }
+.nm-y { color: var(--yes); background: var(--yes-bg); }
+.nm-m { color: var(--maybe); background: var(--maybe-bg); }
+.nm.me { box-shadow: 0 0 0 1.5px var(--brand); }
+.by-person { margin-top: 14px; }
+.by-person summary { cursor: pointer; color: var(--brand); font-weight: 600; font-size: .9rem; }
+.by-person summary:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; border-radius: 6px; }
+.by-person .grid { font-size: .9rem; }
 .legend { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0 0; font-size: .85rem; }
 .lg { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 999px; font-weight: 600; }
 
@@ -173,6 +196,16 @@ table.grid { border-collapse: separate; border-spacing: 0 6px; width: 100%; min-
   .seg label { flex: 1; justify-content: center; padding: 11px 8px; }
   .seg-lbl { font-size: .85rem; }
   .btn-primary { width: 100%; padding: 15px; }
+  /* summary rows become small cards: option and counts on top, names underneath */
+  .sum-tbl, .sum-tbl tbody { display: block; }
+  .sum-tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .sum-tbl tr { display: grid; grid-template-columns: 1fr auto auto; align-items: center; column-gap: 4px; padding: 6px 4px; border-top: 1px solid var(--line); }
+  .sum-tbl th, .sum-tbl td { border-top: 0; padding: 2px 4px; }
+  .sum-tbl .opt-cell { white-space: normal; }
+  .sum-tbl .n { width: auto; min-width: 2.4rem; }
+  .sum-tbl td.yes::before { content: "\2713\00a0"; font-weight: 800; }
+  .sum-tbl td.maybe::before { content: "~\00a0"; font-weight: 800; }
+  .sum-tbl td.who-list { grid-column: 1 / -1; padding-top: 2px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
 @media print { .hero { background: #fff; color: #000; } .hero::after, .btn-primary, .quick, .hp, .theme-btn { display: none; } }
