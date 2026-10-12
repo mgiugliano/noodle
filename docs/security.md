@@ -99,7 +99,7 @@ The attacker model: an anonymous person on the internet who may know a poll link
 
 - **Calendar:** event titles, attendees and notes never leave your Mac. The server receives only the start and end of the slots you approve.
 - **Voters:** the server stores the name a voter typed and their answers. It does **not** store IP addresses, user agents or any identifier other than the random per-vote token hash. The rate limiter keeps small files named by an HMAC of the address (it cannot be reversed without your secret) containing only timestamps; files older than an hour are deleted during later requests.
-- **Cookies:** the only cookie is the per-poll edit token, needed so a voter can change their own vote. There are no analytics, advertising or third-party requests of any kind. The pages load nothing from outside your own server, not even fonts.
+- **Cookies:** the only cookie is the per-poll edit token, needed so a voter can change their own vote. The page also remembers two preferences in the visitor's own browser (`localStorage`: the chosen light/dark theme and the time-zone switch); they are never sent to the server. There are no analytics, advertising or third-party requests of any kind. The pages load nothing from outside your own server, not even fonts.
 - **Retention:** polls stay on the server until you delete them. Delete finished polls (`noodle delete <poll>`); names are personal data.
 - **Your host** may keep ordinary web-server access logs (with addresses) outside Noodle's control.
 

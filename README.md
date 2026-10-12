@@ -33,7 +33,7 @@ Noodle has two parts that talk to each other over HTTPS:
 - **It keeps your time safe while people vote.** Every proposed slot becomes a tentative hold in your calendar. When the poll is settled, the winner is confirmed and every other hold is deleted, automatically if you wish.
 - **It runs anywhere PHP runs.** No database, no SQL, no SQLite, no Composer, no Node, no build step, no shell access on the server. Upload files by FTP and you are done.
 - **There is no admin login page to attack.** All management is done from your Mac with signed requests.
-- **It looks good.** Colourful, modern, responsive, light and dark mode, accessible (keyboard, screen readers, colour-blind-safe icons), and it works without JavaScript.
+- **It looks good.** Colourful, modern, responsive, light and dark mode (follows the system, with a button to switch), accessible (keyboard, screen readers, colour-blind-safe icons), and it works without JavaScript.
 - **It contains no tracking.** No analytics, no cookies except a voter's own edit cookie, no external fonts, scripts or images, and no IP addresses are stored.
 
 ## Features

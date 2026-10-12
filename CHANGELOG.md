@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Voting page: a button in the header switches between light and dark theme (follows the system by default, remembers the choice in the visitor's browser, no inline script or style, works without JavaScript)
 - `noodle new --no-reserved` and `--unreserve "<rule>"`: offer reserved time (for example the lunch break) for a single poll without editing the configuration
 - `noodle busy <day> [<last day>]` shows what blocks time on given days and why
 - Calendar holds now always block time when proposing slots, even when `tentativeBlocks` is off

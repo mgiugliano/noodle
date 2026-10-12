@@ -2,6 +2,33 @@
 (function () {
   'use strict';
 
+  // ---- Light / dark theme button ----
+  var themeBtn = document.querySelector('[data-theme-toggle]');
+  if (themeBtn) {
+    var root = document.documentElement;
+    var systemDark = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    var current = function () {
+      var t = root.getAttribute('data-theme');
+      return t === 'dark' || t === 'light' ? t : (systemDark && systemDark.matches ? 'dark' : 'light');
+    };
+    var paint = function () {
+      var dark = current() === 'dark';
+      var use = themeBtn.querySelector('use');
+      if (use) { use.setAttribute('href', dark ? '#i-sun' : '#i-moon'); }
+      themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+      themeBtn.setAttribute('title', dark ? 'Switch to light theme' : 'Switch to dark theme');
+    };
+    themeBtn.hidden = false;
+    paint();
+    themeBtn.addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('noodle-theme', next); } catch (e) { /* ignore */ }
+      paint();
+    });
+    if (systemDark && systemDark.addEventListener) { systemDark.addEventListener('change', paint); }
+  }
+
   // ---- Time zone toggle: show times in the visitor's own zone ----
   var els = Array.prototype.slice.call(document.querySelectorAll('[data-start]'));
   var btn = document.querySelector('[data-tz-toggle]');

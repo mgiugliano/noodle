@@ -39,6 +39,8 @@ function v_sprite(): string
 <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 7.500V12l3 2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
 <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.500" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3.500 12h17M12 3.500c2.500 2.500 3.500 5.500 3.500 8.500s-1 6-3.500 8.500c-2.500-2.500-3.500-5.500-3.500-8.500s1-6 3.500-8.500z" fill="none" stroke="currentColor" stroke-width="1.800"/></symbol>
 <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8.500" r="3.500" fill="none" stroke="currentColor" stroke-width="2"/><path d="M2.500 19c.5-3.500 3-5.500 6.500-5.500s6 2 6.500 5.500M16 5.500a3.500 3.500 0 010 6.500M18 14c2 .6 3.200 2.300 3.500 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.500A8.500 8.500 0 019.500 4a8.500 8.500 0 1010.500 10.500z" fill="currentColor"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.200" fill="currentColor"/><path d="M12 2.500v2.300M12 19.200v2.300M2.500 12h2.300M19.200 12h2.300M5.300 5.300l1.600 1.600M17.100 17.100l1.600 1.600M5.300 18.700l1.600-1.600M17.100 6.900l1.600-1.600" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
 <symbol id="i-logo" viewBox="0 0 32 32"><rect width="32" height="32" rx="9" fill="currentColor"/><path d="M9 17l5 5 9-11" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></symbol>
 </defs></svg>
 SVG;
@@ -53,12 +55,14 @@ function v_head(string $title): string
         . '<title>' . h($title) . ' · Noodle</title>'
         . '<link rel="icon" href="' . h($fav) . '">'
         . '<link rel="stylesheet" href="assets/noodle.css">'
+        . '<script src="assets/theme.js"></script>'
         . '<script src="assets/noodle.js" defer></script></head><body>' . v_sprite();
 }
 
 function v_brand(): string
 {
-    return '<div class="brand">' . '<svg class="logo" aria-hidden="true"><use href="#i-logo"/></svg><span>Noodle</span></div>';
+    return '<div class="topbar"><div class="brand"><svg class="logo" aria-hidden="true"><use href="#i-logo"/></svg><span>Noodle</span></div>'
+        . '<button type="button" class="theme-btn" data-theme-toggle hidden aria-label="Switch to dark theme" title="Switch to dark theme"><svg class="ico" aria-hidden="true"><use href="#i-moon"/></svg></button></div>';
 }
 
 /** A plain message page (404, errors). */
