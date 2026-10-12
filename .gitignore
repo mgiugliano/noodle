@@ -1,0 +1,12 @@
+# Generated or private: never commit these
+dist/
+build/
+data/
+app/config.php
+**/config.php
+
+# Local state and junk
+*.log
+.DS_Store
+.config/
+*.swp

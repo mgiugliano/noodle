@@ -1,0 +1,9 @@
+# Noodle: public entry points
+Options -Indexes
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+</IfModule>
+# Never serve dotfiles or stray config/data
+<FilesMatch "(^\.|\.(json|lock|tmp|bak|log)$)">
+  Require all denied
+</FilesMatch>

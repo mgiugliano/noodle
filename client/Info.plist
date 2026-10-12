@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIdentifier</key>
+    <string>com.example.noodle</string>
+    <key>CFBundleName</key>
+    <string>noodle</string>
+    <key>NSCalendarsFullAccessUsageDescription</key>
+    <string>Noodle reads your calendars to find free time slots and creates tentative holds for poll options. Event titles never leave your Mac.</string>
+    <key>NSCalendarsUsageDescription</key>
+    <string>Noodle reads your calendars to find free time slots and creates tentative holds for poll options. Event titles never leave your Mac.</string>
+</dict>
+</plist>
