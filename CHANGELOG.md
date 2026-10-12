@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+- `noodle new --no-reserved` and `--unreserve "<rule>"`: offer reserved time (for example the lunch break) for a single poll without editing the configuration
+- `noodle busy <day> [<last day>]` shows what blocks time on given days and why
+- Calendar holds now always block time when proposing slots, even when `tentativeBlocks` is off
+
 ## 1.0.0 (2026-10-12)
 
 First public release.

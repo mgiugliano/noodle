@@ -333,6 +333,7 @@ case "doctor": cmdDoctor()
 case "config": cmdConfig()
 case "calendars": cmdCalendars()
 case "new": cmdNew(Array(args.dropFirst()))
+case "busy": cmdBusy(Array(args.dropFirst()))
 case "polls": cmdPolls()
 case "selftest": cmdSelfTest()
 case "results": cmdResults(Array(args.dropFirst()))
@@ -353,9 +354,10 @@ default:
       noodle doctor
       noodle config                       show settings (and write defaults to the config file)
       noodle calendars                    list calendars Noodle can see
+      noodle busy 2026-10-15 [2026-10-16] show what blocks time on those days, and why
       noodle new --title "..." [--from YYYY-MM-DD --to YYYY-MM-DD --duration 60 --hours 09:00-17:00
                  --days Mon-Fri --calendars "Work,Home" --reserve "Fri 13:00-17:00,2026-10-21" --deadline "+3d" --max-votes 8
-                 --description "..." --no-maybe --hide-votes --no-holds --dry-run --yes]
+                 --description "..." --no-maybe --hide-votes --no-holds --no-reserved --unreserve "rule" --dry-run --yes]
       noodle polls                        list your polls on the server
       noodle results <poll> [--csv]       who voted what; best slot marked   (<poll> = slug, unique prefix, or "latest")
       noodle close <poll>                 stop accepting votes

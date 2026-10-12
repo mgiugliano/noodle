@@ -82,6 +82,7 @@ noodle delete latest           # remove the poll from the server, and its holds
 | `ping` | Sends one signed request and reports whether the server accepted it. |
 | `config` | Prints the config path and all settings; writes defaults for any missing key. |
 | `calendars` | Lists the calendars Noodle can see (and whether they are writable). |
+| `busy <day> [<last day>]` | Diagnostic: lists the events of your busy calendars on those days (`YYYY-MM-DD`) and whether each one blocks time or is ignored, and why (Free, declined, all-day...). Use it when a day you expect to be free gets no slots. Prints on your Mac only. |
 | `new --title "..." [options]` | Finds free slots, lets you trim them, publishes the poll, creates holds, copies the link. |
 | `polls` | Lists your polls on the server: id, open/closed, number of votes, title. |
 | `results <poll> [--csv]` | Per-slot totals with the best slot starred, and every response with its id. `--csv` prints a spreadsheet-safe CSV instead. |
@@ -107,6 +108,8 @@ noodle delete latest           # remove the poll from the server, and its holds
 | `--days Mon-Fri` | `days` | Weekdays to use: `Mon-Fri`, `Mon,Wed,Fri`, `Sat-Sun`... |
 | `--calendars "A,B"` | `busyCalendars` | Calendars that count as busy, for this poll only |
 | `--reserve "rule,rule"` | none | Extra reserved-time rules for this poll only (see [configuration](configuration.md#reserved-time-rules)) |
+| `--no-reserved` | off | Ignore every rule in `reserved` from your config for this poll (rules given with `--reserve` still apply) |
+| `--unreserve "rule"` | none | Drop one rule of your config for this poll only; the text must match the rule in `config.json` (case and extra spaces do not matter). Repeat the option to drop several. An unknown rule is an error that lists your rules |
 | `--deadline X` | none | Voting closes then: `"2026-11-05 18:00"` (your time zone) or relative `"+3d"`, `"+48h"` |
 | `--max-votes N` | none | Voting closes after N responses (1 to 500) |
 | `--no-maybe` | off | Remove the *if need be* answer: only yes or no |

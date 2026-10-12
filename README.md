@@ -101,6 +101,10 @@ noodle new --title "Planning" --from 2026-11-02 --to 2026-11-13 --hours 09:00-12
 # Only Tuesdays and Thursdays, and keep Thursday afternoons free
 noodle new --title "Office hours" --days Tue,Thu --reserve "Thu 14:00-18:00"
 
+# Offer the lunch break this time (drop one reserved rule, or all of them, for this poll only)
+noodle new --title "Lunch & learn" --unreserve "Mon-Fri 12:00-13:30"
+noodle new --title "Anytime" --no-reserved
+
 # A workshop with 8 seats: voting closes by itself after the 8th response; no calendar holds
 noodle new --title "Workshop" --duration 120 --max-votes 8 --no-holds
 

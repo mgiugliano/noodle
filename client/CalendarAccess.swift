@@ -104,3 +104,39 @@ func confirmEvent(id: String, title: String, notes: String, moveTo calendarName:
     }
     do { try eventStore.save(ev, span: .thisEvent, commit: true); return true } catch { return false }
 }
+
+/// `noodle busy <first-day> [last-day]`: show what blocks time on those days and why (diagnostic, prints locally only).
+func cmdBusy(_ args: [String]) {
+    let cfg = loadConfig()
+    guard let tz = TimeZone(identifier: cfg.timezone) else { fail("unknown timezone in config") }
+    let days = args.filter { !$0.hasPrefix("--") }
+    guard let first = days.first.flatMap({ parseLocalDateTime($0, tz: tz) }) else { fail("usage: noodle busy <YYYY-MM-DD> [<YYYY-MM-DD>]") }
+    let lastArg = days.count > 1 ? parseLocalDateTime(days[1], tz: tz) : first
+    guard let last = lastArg, last >= first else { fail("bad second day") }
+    var cal = Calendar(identifier: .gregorian); cal.timeZone = tz
+    let from = cal.startOfDay(for: first)
+    let to = cal.date(byAdding: .day, value: 1, to: cal.startOfDay(for: last))!
+
+    requestCalendarAccess()
+    let names = Set(cfg.busyCalendars)
+    let cals = eventStore.calendars(for: .event).filter {
+        names.isEmpty ? $0.type != .birthday : (names.contains($0.title) || $0.title == cfg.holdCalendar)
+    }
+    guard !cals.isEmpty else { fail("no calendars selected") }
+    let fmt = DateFormatter(); fmt.timeZone = tz; fmt.locale = Locale(identifier: "en_US_POSIX"); fmt.dateFormat = "EEE d MMM HH:mm"
+    let events = eventStore.events(matching: eventStore.predicateForEvents(withStart: from, end: to, calendars: cals))
+        .sorted { $0.startDate < $1.startDate }
+    print("Events in your busy calendars from \(fmt.string(from: from)) to \(fmt.string(from: to)) (\(cfg.timezone)):\n")
+    for ev in events {
+        var why = "BLOCKS"
+        if ev.status == .canceled { why = "ignored: cancelled" }
+        else if ev.availability == .free { why = "ignored: marked Free" }
+        else if ev.availability == .tentative && !cfg.tentativeBlocks && ev.calendar.title != cfg.holdCalendar { why = "ignored: tentative" }
+        else if ev.attendees?.contains(where: { $0.isCurrentUser && $0.participantStatus == .declined }) == true { why = "ignored: declined" }
+        else if ev.isAllDay && !cfg.allDayBlocks { why = "ignored: all-day" }
+        let when = ev.isAllDay ? "ALL DAY  \(fmt.string(from: ev.startDate).prefix(10))" : "\(fmt.string(from: ev.startDate))-\(fmt.string(from: ev.endDate).suffix(5))"
+        print("  \(why.padding(toLength: 20, withPad: " ", startingAt: 0)) \(when.padding(toLength: 24, withPad: " ", startingAt: 0)) [\(clean(ev.calendar.title))] \(clean(String(ev.title ?? "(no title)").prefix(60).description))")
+    }
+    if events.isEmpty { print("  (nothing)") }
+    print("\nOnly events marked BLOCKS stop Noodle from proposing that time. Reserved rules in config.json are applied on top of this.")
+}

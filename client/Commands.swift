@@ -96,10 +96,30 @@ func cmdNew(_ args: [String]) {
     let assumeYes = args.contains("--yes")
     let useHolds = cfg.holds && !args.contains("--no-holds") && !dryRun
 
+    var configRules = cfg.reserved
+    if args.contains("--no-reserved") {
+        configRules = []
+    } else {
+        // --unreserve "<rule>" (repeatable) drops one rule of the config for this poll only
+        func norm(_ r: String) -> String { r.lowercased().split(whereSeparator: { $0.isWhitespace }).joined(separator: " ") }
+        var i = 0
+        while i < args.count {
+            if args[i] == "--unreserve" {
+                guard i + 1 < args.count else { fail("--unreserve needs a rule, for example --unreserve \"Mon-Fri 12:00-13:30\"") }
+                let target = norm(args[i + 1])
+                guard configRules.contains(where: { norm($0) == target }) else {
+                    fail("--unreserve: no such rule in your config: \"\(args[i + 1])\". Your rules: " + (cfg.reserved.isEmpty ? "(none)" : cfg.reserved.map { "\"\($0)\"" }.joined(separator: ", ")))
+                }
+                configRules.removeAll { norm($0) == target }
+                i += 2
+            } else { i += 1 }
+        }
+    }
+
     requestCalendarAccess()
     var busy = busyIntervals(cfg: cfg, from: cal.startOfDay(for: from), to: cal.date(byAdding: .day, value: 2, to: to)!, calendarNames: calendarNames)
     let extra = arg("--reserve", in: args).map { $0.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) } } ?? []
-    guard let reserved = reservedIntervals(rules: cfg.reserved + extra, from: from, to: to, tz: tz) else {
+    guard let reserved = reservedIntervals(rules: configRules + extra, from: from, to: to, tz: tz) else {
         fail("cannot understand a reserved-time rule. Examples: \"Fri 13:00-17:00\", \"Mon-Fri 12:00-13:00\", \"2026-10-21\", \"2026-12-24..2027-01-06\"")
     }
     busy += reserved
